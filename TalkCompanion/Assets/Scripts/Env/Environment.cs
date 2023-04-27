@@ -13,7 +13,7 @@ namespace TalkCompanion.Env
         /// <summary>
         /// OpenAIのトークン
         /// </summary>
-        public readonly string OpenAIToken { get; private set; }
+        public string OpenAIToken { get; private set; }
 
         #region Singleton
         public Environment Instance { get; private set; } = new Environment();
