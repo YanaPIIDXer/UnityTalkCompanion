@@ -5,9 +5,9 @@ using UnityEngine;
 namespace TalkCompanion.ChatGPT
 {
     /// <summary>
-    /// AIクラス
+    /// ChatGPTのコア
     /// </summary>
-    public class AICore : MonoBehaviour
+    public class ChatGPTCore : MonoBehaviour
     {
         // APIのエンドポイント
         private readonly string apiEndpoint = "https://api.openai.com/v1/chat/completions";
