@@ -11,5 +11,13 @@ namespace TalkCompanion.ChatGPT
     {
         // APIのエンドポイント
         private readonly string apiEndpoint = "https://api.openai.com/v1/chat/completions";
+
+        /// <summary>
+        /// 発言する
+        /// </summary>
+        /// <param name="message">発言内容</param>
+        public void Say(string message)
+        {
+        }
     }
 }
