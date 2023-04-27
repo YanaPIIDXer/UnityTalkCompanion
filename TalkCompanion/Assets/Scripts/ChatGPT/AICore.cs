@@ -9,5 +9,7 @@ namespace TalkCompanion.ChatGPT
     /// </summary>
     public class AICore : MonoBehaviour
     {
+        // APIのエンドポイント
+        private readonly string apiEndpoint = "https://api.openai.com/v1/chat/completions";
     }
 }
