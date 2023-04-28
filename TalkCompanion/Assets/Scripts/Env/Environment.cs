@@ -16,7 +16,7 @@ namespace TalkCompanion.Env
         public string OpenAIToken { get; private set; }
 
         #region Singleton
-        public Environment Instance { get; private set; } = new Environment();
+        public static Environment Instance { get; private set; } = new Environment();
         #endregion
     }
 }
