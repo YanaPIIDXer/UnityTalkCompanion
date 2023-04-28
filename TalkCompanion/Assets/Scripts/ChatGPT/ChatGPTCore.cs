@@ -71,6 +71,7 @@ namespace TalkCompanion.ChatGPT
             };
             string bodyJson = JsonUtility.ToJson(body);
             Debug.Log(bodyJson);
+            await UniTask.Delay(1); // 後で消すけど一応Warning回避
             return bodyJson;
         }
     }
