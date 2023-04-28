@@ -7,7 +7,7 @@ namespace TalkCompanion.ChatGPT
     /// <summary>
     /// ChatGPTのコア
     /// </summary>
-    public class ChatGPTCore : MonoBehaviour
+    public class ChatGPTCore
     {
         /// <summary>
         /// APIのエンドポイント
