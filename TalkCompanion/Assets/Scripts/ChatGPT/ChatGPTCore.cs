@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Networking;
 
 namespace TalkCompanion.ChatGPT
 {
@@ -47,19 +48,30 @@ namespace TalkCompanion.ChatGPT
         /// <param name="message">発言内容</param>
         public async UniTask<string> Say(string message)
         {
-            List<Message> msgList = new List<Message>();
+            List<Dictionary<string, string>> msgList = new List<Dictionary<string, string>>();
             Message msg = Message.Generate(ETalkerRole.User, message);
             if (this.enableTalkContext)
             {
                 // 会話コンテキスト
-                msgList.AddRange(this.talkContexts);
+                this.talkContexts.ForEach(m =>
+                {
+                    msgList.Add(m.ToDictionary());
+                });
                 this.talkContexts.Add(msg);
             }
-            msgList.Add(msg);
+            msgList.Add(msg.ToDictionary());
 
-            // TODO: APIコールの実装
-            await UniTask.Delay(1000);  // Warning回避用に一応
-            return "";
+            Dictionary<string, string> header = new Dictionary<string, string>() {
+                { "Authorization", "Bearer " + this.apiToken },
+                { "Content-Type", "application/json" },
+            };
+            Dictionary<string, string> body = new Dictionary<string, string>() {
+                { "model", "gpt-3.5-turbo" },
+                { "messages", msgList.ToString() },
+            };
+            string bodyJson = JsonUtility.ToJson(body);
+            Debug.Log(bodyJson);
+            return bodyJson;
         }
     }
 }
