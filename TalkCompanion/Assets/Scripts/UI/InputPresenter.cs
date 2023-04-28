@@ -7,9 +7,17 @@ using System;
 namespace TalkCompanion.UI
 {
     /// <summary>
+    /// 入力Presenterインタフェース
+    /// </summary>
+    public interface IInputPresenter
+    {
+        IObservable<string> onUserSubmit { get; }
+    }
+
+    /// <summary>
     /// 入力Presenter
     /// </summary>
-    public class InputPresenter : MonoBehaviour
+    public class InputPresenter : MonoBehaviour, IInputPresenter
     {
         /// <summary>
         /// ユーザの入力
