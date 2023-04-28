@@ -71,5 +71,18 @@ namespace TalkCompanion.ChatGPT
             this.role = role;
             this.message = message;
         }
+
+        /// <summary>
+        /// APIに投げるためのDictionaryに変換
+        /// </summary>
+        /// <returns>Dictionary</returns>
+        public Dictionary<string, string> ToDictionary()
+        {
+            return new Dictionary<string, string>()
+            {
+                { "role", this.role },
+                { "content", this.message },
+            };
+        }
     }
 }
