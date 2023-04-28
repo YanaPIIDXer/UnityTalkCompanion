@@ -90,8 +90,13 @@ namespace TalkCompanion.ChatGPT
 
 
             var responseString = apiRequest.downloadHandler.text;
-            // TODO: レスポンスをパースして発言だけ取り出す処理の実装
-            return responseString;
+            var responseObject = JsonUtility.FromJson<APIResponse>(responseString);
+            if (this.enableTalkContext)
+            {
+                // コンテキストが有効なら保存
+                this.talkContexts.Add(responseObject.choices[0].message);
+            }
+            return responseObject.choices[0].message.content;
         }
     }
 }
