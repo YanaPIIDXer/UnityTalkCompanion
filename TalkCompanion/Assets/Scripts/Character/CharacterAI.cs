@@ -20,6 +20,10 @@ namespace TalkCompanion.Character
         {
             string response = await gptCore.Say("TypeScriptでHello, Worldを書いてください");
             Debug.Log(response);
+            response = await gptCore.Say("C++ではどうですか？");
+            Debug.Log(response);
+            response = await gptCore.Say("C#ではどうですか？");
+            Debug.Log(response);
         }
     }
 }
