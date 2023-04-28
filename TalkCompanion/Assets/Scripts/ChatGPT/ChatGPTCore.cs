@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Networking;
+using System;
+using System.Text;
 
 namespace TalkCompanion.ChatGPT
 {
@@ -58,16 +60,38 @@ namespace TalkCompanion.ChatGPT
             }
             request.messages.Add(msg);
 
-            Dictionary<string, string> header = new Dictionary<string, string>() {
+            Dictionary<string, string> headers = new Dictionary<string, string>() {
                 { "Authorization", "Bearer " + this.apiToken },
                 { "Content-Type", "application/json" },
             };
 
             string bodyJson = JsonUtility.ToJson(request);
-            Debug.Log("BodyJson: " + bodyJson);
 
-            await UniTask.Delay(1); // 後で消すけど一応Warning回避
-            return "";
+            using var apiRequest = new UnityWebRequest(this.apiEndpoint, "POST")
+            {
+                uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(bodyJson)),
+                downloadHandler = new DownloadHandlerBuffer()
+            };
+
+            foreach (var header in headers)
+            {
+                apiRequest.SetRequestHeader(header.Key, header.Value);
+            }
+
+            await apiRequest.SendWebRequest();
+
+
+            if (apiRequest.result == UnityWebRequest.Result.ConnectionError ||
+                apiRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError(apiRequest.error);
+                throw new Exception(apiRequest.error.ToString());
+            }
+
+
+            var responseString = apiRequest.downloadHandler.text;
+            // TODO: レスポンスをパースして発言だけ取り出す処理の実装
+            return responseString;
         }
     }
 }

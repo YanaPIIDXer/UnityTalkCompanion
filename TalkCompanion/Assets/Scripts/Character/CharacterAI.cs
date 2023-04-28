@@ -18,7 +18,8 @@ namespace TalkCompanion.Character
 
         async void Start()
         {
-            await gptCore.Say("Test");
+            string response = await gptCore.Say("TypeScriptでHello, Worldを書いてください");
+            Debug.Log(response);
         }
     }
 }
