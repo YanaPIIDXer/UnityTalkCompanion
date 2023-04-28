@@ -6,18 +6,40 @@ using TalkCompanion.Env;
 using TalkCompanion.UI;
 using Zenject;
 using UniRx;
+using System;
 
 namespace TalkCompanion.Character
 {
     /// <summary>
+    /// AIインタフェース
+    /// </summary>
+    public interface ICharacterAI
+    {
+        /// <summary>
+        /// レスポンスを受け取った
+        /// </summary>
+        public IObservable<string> onResponse { get; }
+    }
+
+    /// <summary>
     /// キャラクタAIクラス
     /// </summary>
-    public class CharacterAI : MonoBehaviour
+    public class CharacterAI : MonoBehaviour, ICharacterAI
     {
         /// <summary>
         /// ChatGPTのコア
         /// </summary>
-        private ChatGPTCore gptCore = new ChatGPTCore(Environment.Instance.OpenAIToken, true);
+        private ChatGPTCore gptCore = new ChatGPTCore(Env.Environment.Instance.OpenAIToken, true);
+
+        /// <summary>
+        /// レスポンスを受け取った時のSubject
+        /// </summary>
+        private Subject<string> onResponseSubject = new Subject<string>();
+
+        /// <summary>
+        /// レスポンスを受け取った
+        /// </summary>
+        public IObservable<string> onResponse => onResponseSubject;
 
         /// <summary>
         /// InputPresenterのInject
@@ -30,7 +52,7 @@ namespace TalkCompanion.Character
                           .Subscribe(async (message) =>
                           {
                               string response = await gptCore.Say(message);
-                              Debug.Log(response);
+                              onResponseSubject.OnNext(response);
                           }).AddTo(gameObject);
         }
     }
