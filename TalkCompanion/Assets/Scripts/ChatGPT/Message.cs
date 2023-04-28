@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace TalkCompanion.ChatGPT
 {
@@ -28,17 +29,18 @@ namespace TalkCompanion.ChatGPT
     /// <summary>
     /// メッセージオブジェクトクラス
     /// </summary>
+    [Serializable]
     public class Message
     {
         /// <summary>
         /// ロール
         /// </summary>
-        public readonly string role;
+        public string role;
 
         /// <summary>
         /// メッセージ
         /// </summary>
-        public readonly string message;
+        public string content;
 
         /// <summary>
         /// 生成
@@ -69,20 +71,7 @@ namespace TalkCompanion.ChatGPT
         public Message(string role, string message)
         {
             this.role = role;
-            this.message = message;
-        }
-
-        /// <summary>
-        /// APIに投げるためのDictionaryに変換
-        /// </summary>
-        /// <returns>Dictionary</returns>
-        public Dictionary<string, string> ToDictionary()
-        {
-            return new Dictionary<string, string>()
-            {
-                { "role", this.role },
-                { "content", this.message },
-            };
+            this.content = message;
         }
     }
 }

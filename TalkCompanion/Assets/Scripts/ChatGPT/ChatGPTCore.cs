@@ -48,31 +48,26 @@ namespace TalkCompanion.ChatGPT
         /// <param name="message">発言内容</param>
         public async UniTask<string> Say(string message)
         {
-            List<Dictionary<string, string>> msgList = new List<Dictionary<string, string>>();
+            APIRequest request = new APIRequest();
             Message msg = Message.Generate(ETalkerRole.User, message);
             if (this.enableTalkContext)
             {
                 // 会話コンテキスト
-                this.talkContexts.ForEach(m =>
-                {
-                    msgList.Add(m.ToDictionary());
-                });
+                request.messages.AddRange(this.talkContexts);
                 this.talkContexts.Add(msg);
             }
-            msgList.Add(msg.ToDictionary());
+            request.messages.Add(msg);
 
             Dictionary<string, string> header = new Dictionary<string, string>() {
                 { "Authorization", "Bearer " + this.apiToken },
                 { "Content-Type", "application/json" },
             };
-            Dictionary<string, string> body = new Dictionary<string, string>() {
-                { "model", "gpt-3.5-turbo" },
-                { "messages", msgList.ToString() },
-            };
-            string bodyJson = JsonUtility.ToJson(body);
-            Debug.Log(bodyJson);
+
+            string bodyJson = JsonUtility.ToJson(request);
+            Debug.Log("BodyJson: " + bodyJson);
+
             await UniTask.Delay(1); // 後で消すけど一応Warning回避
-            return bodyJson;
+            return "";
         }
     }
 }
