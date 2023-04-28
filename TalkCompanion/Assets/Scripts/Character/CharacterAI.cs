@@ -15,9 +15,5 @@ namespace TalkCompanion.Character
         /// ChatGPTのコア
         /// </summary>
         private ChatGPTCore gptCore = new ChatGPTCore(Environment.Instance.OpenAIToken, true);
-
-        async void Start()
-        {
-        }
     }
 }
